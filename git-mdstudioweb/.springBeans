@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[3.6.1.201408250730-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+	</configs>
+	<autoconfigs>
+		<config>src/resources/WEB-INF/photo-center-spring.xml</config>
+	</autoconfigs>
+	<configSets>
+		<configSet>
+			<name><![CDATA[a]]></name>
+			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
+			<incomplete>false</incomplete>
+			<configs>
+				<config>/mdstudio-core/src/java/com/md/studio/springconfig/core-daos-spring.xml</config>
+				<config>/mdstudio-core/src/java/com/md/studio/springconfig/core-env-spring.xml</config>
+				<config>/mdstudio-core/src/java/com/md/studio/springconfig/core-listener-spring.xml</config>
+				<config>/mdstudio-core/src/java/com/md/studio/springconfig/core-services-spring.xml</config>
+				<config>/mdstudio-core/src/java/com/md/studio/springconfig/eventhandler-spring.xml</config>
+				<config>/mdstudio-core/src/java/com/md/studio/springconfig/scheduled-jobs-spring.xml</config>
+				<config>src/resources/WEB-INF/photo-center-spring.xml</config>
+			</configs>
+			<profiles>
+			</profiles>
+		</configSet>
+	</configSets>
+</beansProjectDescription>

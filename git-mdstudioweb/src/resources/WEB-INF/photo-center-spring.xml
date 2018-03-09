@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:webflow="http://www.springframework.org/schema/webflow-config"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/webflow-config http://www.springframework.org/schema/webflow-config/spring-webflow-config.xsd">
+		
+	<context:property-placeholder system-properties-mode="OVERRIDE"/>
+	
+	<bean id="abstractController" class="com.md.studio.web.controller.AbstractController" abstract="true">
+		<property name="referenceDataSvc" ref="referenceDataSvc"/>
+		<property name="photoUploadDirSvc" ref="photoUploadDirSvc"/>
+	</bean>
+	
+	<bean id="photoController" class="com.md.studio.web.controller.PhotoController" parent="abstractController">
+		<property name="photoInfoNewSvc" ref="photoInfoNewSvc"/>
+	</bean>
+	
+	<bean id="photoUtilController" class="com.md.studio.web.controller.PhotoUtilController">
+		<property name="photoUtilSvc" ref="photoUtilSvc"/>
+	</bean>
+	
+	<bean id="photoProxyController" class="com.md.studio.web.controller.PhotoProxyController" parent="abstractController">
+		<property name="locationMap">
+			<map>
+				<entry key="permType" value="${mdstudio.photoInfoSvc.permPhotoLocation:/Users/rordinario/Desktop/permfolder}"/>
+				<entry key="permSpecialType" value="${mdstudio.photoInfoSvc.permSpecialPhotoLocation:/Users/rordinario/Desktop/permfolder}"/>
+				<entry key="slideType" value="${mdstudio.photoInfoSvc.permSlideShowLocation:/Users/rordinario/Desktop/permSlideFolder}"/>
+				<entry key="previewType" value="${mdstudio.photoInfoSvc.permPreviewLocation:/Users/rordinario/Desktop/previewfolder}"/>
+				<entry key="adminMiscType" value="${mdstudio.photoInfoSvc.adminMiscellaneous.photoLocation:/Users/rordinario/Desktop/previewfolder}"/>
+				<entry key="portfolioType" value="${mdstudio.photoInfoSvc.permPortfolioLocation:/Users/rordinario/Desktop/previewfolder}"/>
+				<entry key="eventInfoBannerType" value="${mdstudio.photoInfoSvc.permEventInfoBannerLocation:/Users/rordinario/Desktop/previewfolder}"/>
+				<entry key="calendarType" value="${mdstudio.photoUtilSvc.permCalendarPhotoLocation:/Users/rordinario/Pictures/mdcalendarfolder}"/>
+			</map>
+		</property>
+		<property name="photoGathererSvc" ref="photoGathererSvc"/>
+		<property name="siteUserActivityLogSvc" ref="siteUserActivityLogSvc"/>
+	</bean>
+	
+	<bean id="photoRefreshMsgController" class="com.md.studio.web.controller.PhotoRefreshMgtController">
+		<property name="refreshManagerSvc" ref="refreshManagerSvc"/>
+	</bean>
+	
+	<bean id="userTestimonialController" class="com.md.studio.web.controller.UserTestimonialController">
+		<property name="userTestimonialSvc" ref="userTestimonialSvc"/>
+		<property name="validationUtil" ref="validationUtil" />
+	</bean>
+	
+	<bean id="emailController"	class="com.md.studio.web.controller.EmailController">
+		<property name="emailSenderSvc" ref="emailSenderSvc"/>
+		<property name="emailValidationUtil" ref="emailValidationUtil"/>
+	</bean>
+	
+	<bean id="signupAndActivateController" class="com.md.studio.web.controller.SignupAndActivateController" parent="abstractController">
+		<property name="signupUserSvc" ref="signupUserSvc"/>
+	</bean>
+	
+	<bean id="siteUserSessionFilter" class="com.md.studio.web.controller.SiteUserSessionFilter" parent="abstractController">
+	</bean>
+	
+	<bean id="siteUserSessionController" class="com.md.studio.web.controller.SiteUserSessionController">
+		<property name="siteUserInfoSvc" ref="siteUserInfoSvc"/>
+		<property name="siteUserEventPublisher" ref="siteUserEventMonitor"/>
+	</bean>
+	
+	
+	<bean id="passwordResetController" class="com.md.studio.web.controller.PasswordResetController">
+		<property name="siteUserInfo" ref="siteUserInfoSvc"/>
+	</bean>
+	
+	<bean id="photoUploadController" class="com.md.studio.web.controller.PhotoUploadController" parent="abstractController">
+		<property name="photoUtilSvc" ref="photoUtilSvc"/>
+	</bean>
+	
+	<bean id="downloadController" class="com.md.studio.web.controller.DownloadController">
+		<property name="filePathDirectory" value="${download.controller.filepath.directory:J:\\mdStudio-Permanent_DownloadLocation}"/>	
+	</bean>
+	
+	<bean id="contactController" class="com.md.studio.web.controller.ContactController">
+		<property name="eventRequestSvc" ref="eventRequestSvc"/>
+		<property name="eventRequestValidator" ref="eventRequestValidatorUtil"/>
+	</bean>
+	
+	<bean id="eventInfoController" class="com.md.studio.web.controller.EventInfoController">
+		<property name="eventInfoSvc" ref="eventInfoSvc"/>
+	</bean>
+	
+	<bean id="photoGathererController" class="com.md.studio.web.controller.PhotoGathererController" parent="abstractController">
+		<property name="photoGathererSvc" ref="photoGathererSvc"/>
+	</bean>
+	
+	
+	<bean id="referenceDataController" class="com.md.studio.web.controller.ReferenceDataController" parent="abstractController"></bean>
+	
+	<bean id="siteUserInfoController" class="com.md.studio.web.controller.SiteUserInfoController" parent="abstractController">
+		<property name="siteUserInfoSvc" ref="siteUserInfoSvc"/>
+	</bean>
+	
+	<!-- UTILITY  -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="-1"/>
+		<property name="uploadTempDir" value="${mdsnapshots.multipartUploadTempDir:/Users/rordinario/Desktop/mdstudio-Uploaded_TempLocation}"/>
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
+</beans>

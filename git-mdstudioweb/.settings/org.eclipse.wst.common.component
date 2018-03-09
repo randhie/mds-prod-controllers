@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="mdstudioweb">
+        <wb-resource deploy-path="/" source-path="/src/resources" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/java"/>
+        <dependent-module archiveName="mdstudio-core.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/mdstudio-core/mdstudio-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="mdstudioweb"/>
+        <property name="java-output-path" value="/mdstudioweb/build/classes"/>
+    </wb-module>
+</project-modules>

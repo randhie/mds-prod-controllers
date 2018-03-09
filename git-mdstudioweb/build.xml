@@ -1,0 +1,74 @@
+<project name="mdstudioweb" basedir="." default="main">
+	<property name="src.java" 				location="src/java"/>
+	<property name="src.resources" 			location="src/resources"/>
+	<property name="build.dir"				location="tempBuild"/>
+	<property name="antBuild"				location="antBuild"/>
+	
+	<property name="thirdPartyLib"			location="../mdstudio-thirdpartylib"/>
+	<property name="mdstudioCoreLib"		location="../mdstudio-core"/>
+	<property name="mdstudioCoreLib.dir"	location="${build.dir}/WEB-INF/lib"/>
+	
+	<property name="deployment.dir"			location="../../Jboss/server/default/deploy"/>
+	
+	<path id="compile.lib">
+		<fileset dir="${thirdPartyLib}">
+			<include name="**/*.jar"/>
+		</fileset>
+		<fileset dir="${mdstudioCoreLib}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="clean">
+		<delete dir="${build.dir}"/>
+		<delete dir="${antBuild}"/>
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${antBuild}"/>
+	</target>
+
+	<target name="copyToBuild" depends="clean">
+		<copy todir="${build.dir}">
+			<fileset dir="${src.resources}"/>
+		</copy>
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${src.java}"/>
+		</copy>
+	</target>
+	
+	<target name="copyCoreLib" depends="clean,copyToBuild">
+		<mkdir dir="${mdstudioCoreLib.dir}"/>
+		
+		<copy todir="${mdstudioCoreLib.dir}">
+			<fileset dir="${mdstudioCoreLib}/ant-build">
+				<include name="**.jar"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	
+	<target name="compile" depends="copyCoreLib">
+		<javac classpathref="compile.lib" srcdir="${build.dir}"/>
+		
+		<delete>
+			<fileset dir="${build.dir}">
+				<include name="**/*.java"/>
+			</fileset>
+		</delete>
+	</target>
+	
+	
+	<target name="main" depends="compile">
+		<war destfile="${antBuild}/mdstudioweb.war" basedir="${build.dir}"/>
+		<delete dir="${build.dir}"/>
+		
+		<copy todir="${deployment.dir}">
+			<fileset dir="${antBuild}">
+				<include name="**/*.war"/>
+			</fileset>
+		</copy>
+		
+		<delete dir="${antBuild}"/>
+		<delete dir="${mdstudioCoreLib}/ant-build"/>
+	</target>
+	
+</project>
